@@ -5,8 +5,8 @@ const FilteredEventsPage: NextPage = () => {
   const router = useRouter();
   let slug: string[] = [];
 
-  if (Array.isArray(router.query.slug)) {
-    slug = slug.concat(router.query.slug);
+  if (Array.isArray(router.query.filters)) {
+    slug = slug.concat(router.query.filters);
   }
 
   return (
