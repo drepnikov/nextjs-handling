@@ -1,7 +1,7 @@
 import * as React from "react";
-import { EventInterface } from "components/events/types/event.interface";
 import Link from "next/link";
-import Image from "next/image";
+import classes from "./event-item.module.css";
+import { EventInterface } from "components/events/types/event.interface";
 
 interface IEventItemComponentProps {
   event: EventInterface;
@@ -18,20 +18,20 @@ const EventItemComponent: React.FC<IEventItemComponentProps> = ({ event }) => {
   const exploreLink = `/events/${id}`;
 
   return (
-    <li>
+    <li className={classes.item}>
       <img src={"/" + image} alt="" />
-      <div>
-        <div>
+      <div className={classes.content}>
+        <div className={classes.summary}>
           <h2>{title}</h2>
-          <div>
+          <div className={classes.date}>
             <time>{humanReadableDate}</time>
           </div>
-          <div>
+          <div className={classes.address}>
             <address>{formattedAddress}</address>
           </div>
         </div>
 
-        <div>
+        <div className={classes.actions}>
           <Link href={exploreLink}>Explore Event</Link>
         </div>
       </div>
