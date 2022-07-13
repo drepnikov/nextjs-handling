@@ -16,7 +16,7 @@ const MainHeaderComponent: React.FC<
       <nav className={classes.navigation}>
         <ul>
           <li>
-            <Link href={"/events"}>All events</Link>
+            <Link href={"/events"}>Browse all events</Link>
           </li>
         </ul>
       </nav>
