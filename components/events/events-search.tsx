@@ -1,16 +1,33 @@
 import * as React from "react";
 import { ButtonComponent } from "components/ui/button/button";
 import classes from "./events-search.module.css";
+import { MouseEventHandler, useRef } from "react";
 
-interface IEventsSearchComponentProps {}
+interface IEventsSearchComponentProps {
+  onSubmit: (year?: string, month?: string) => any;
+}
 
-const EventsSearchComponent: React.FC<IEventsSearchComponentProps> = () => {
+const EventsSearchComponent: React.FC<IEventsSearchComponentProps> = ({
+  onSubmit,
+}) => {
+  const yearRef = useRef<HTMLSelectElement>(null);
+  const monthRef = useRef<HTMLSelectElement>(null);
+
+  const submitHandler: MouseEventHandler = (e) => {
+    e.preventDefault();
+
+    const selectedYear = yearRef.current?.value;
+    const selectedMonth = monthRef.current?.value;
+
+    onSubmit(selectedYear, selectedMonth);
+  };
+
   return (
     <form className={classes.form}>
       <div className={classes.controls}>
         <div className={classes.control}>
           <label htmlFor="year">Year</label>
-          <select id="year">
+          <select ref={yearRef} id="year">
             <option value="2021">2021</option>
             <option value="2022">2022</option>
           </select>
@@ -18,7 +35,7 @@ const EventsSearchComponent: React.FC<IEventsSearchComponentProps> = () => {
 
         <div className={classes.control}>
           <label htmlFor="month">Month</label>
-          <select id="month">
+          <select ref={monthRef} id="month">
             <option value="1">January</option>
             <option value="2">February</option>
             <option value="3">March</option>
@@ -35,7 +52,7 @@ const EventsSearchComponent: React.FC<IEventsSearchComponentProps> = () => {
         </div>
       </div>
 
-      <ButtonComponent>Find events</ButtonComponent>
+      <ButtonComponent onClick={submitHandler}>Find events</ButtonComponent>
     </form>
   );
 };

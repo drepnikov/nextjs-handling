@@ -1,11 +1,11 @@
 import * as React from "react";
-import { PropsWithChildren } from "react";
+import { MouseEventHandler, PropsWithChildren } from "react";
 import Link from "next/link";
 import classes from "./button.module.css";
 
 interface IButtonComponentProps {
   link?: string;
-  onClick?: () => void;
+  onClick?: MouseEventHandler;
 }
 
 const ButtonComponent: React.FC<PropsWithChildren<IButtonComponentProps>> = ({
