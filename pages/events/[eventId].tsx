@@ -4,13 +4,18 @@ import { getEventById } from "dummy-data";
 import EventSummary from "components/event-detail/event-summary";
 import { EventLogisticsComponent } from "components/event-detail/event-logistics";
 import { EventContentComponent } from "components/event-detail/event-content";
+import { ErrorAlertComponent } from "components/ui/error-alert/error-alert";
 
 const EventDetailPage: NextPage = () => {
   const router = useRouter();
   const event = getEventById(router.query.eventId as string);
 
   if (!event) {
-    return <p>No event found!</p>;
+    return (
+      <ErrorAlertComponent>
+        <p>No event found!</p>
+      </ErrorAlertComponent>
+    );
   }
 
   return (
