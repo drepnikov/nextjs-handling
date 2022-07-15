@@ -4,14 +4,16 @@ import path from "path";
 import { ProductInterface } from "data/types/product.interface";
 
 interface IProductDetailPageProps {
-  product: ProductInterface;
+  product?: ProductInterface;
 }
 
 const ProductDetailPage: NextPage<IProductDetailPageProps> = ({ product }) => {
+  if (!product) return <div>Loading...</div>;
+
   return (
     <>
-      <h1>{product?.title}</h1>
-      <p>{product?.description}</p>
+      <h1>{product.title}</h1>
+      <p>{product.description}</p>
     </>
   );
 };
@@ -41,13 +43,15 @@ export const getStaticPaths: GetStaticPaths = async () => {
     path.join(process.cwd(), "data", "dummy-backend.json"),
     { encoding: "utf-8" }
   );
+
   const parsedData = JSON.parse(result);
 
   return {
-    paths: parsedData.products.map((p: ProductInterface) => ({
-      params: { pid: p.id },
-    })),
-    fallback: false,
+    // paths: parsedData.products.map((p: ProductInterface) => ({
+    //   params: { pid: p.id },
+    // })),
+    paths: [{ params: { pid: "p1" } }],
+    fallback: true,
   };
 };
 export default ProductDetailPage;
