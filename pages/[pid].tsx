@@ -18,39 +18,44 @@ const ProductDetailPage: NextPage<IProductDetailPageProps> = ({ product }) => {
   );
 };
 
-export const getStaticProps: GetStaticProps<IProductDetailPageProps> = async (
-  context
-) => {
+const getData = async () => {
   const result = await fs.readFile(
     path.join(process.cwd(), "data", "dummy-backend.json"),
     { encoding: "utf-8" }
   );
-  const parsedData = JSON.parse(result);
 
-  const product = parsedData.products.find(
+  return JSON.parse(result) as { products: ProductInterface[] };
+};
+
+export const getStaticProps: GetStaticProps<IProductDetailPageProps> = async (
+  context
+) => {
+  const data = await getData();
+
+  const product = data.products.find(
     (p: ProductInterface) => p.id === context.params?.pid
   );
 
+  if (!product) {
+    return {
+      notFound: true,
+    };
+  }
+
   return {
     props: {
-      product,
+      product: product,
     },
   };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const result = await fs.readFile(
-    path.join(process.cwd(), "data", "dummy-backend.json"),
-    { encoding: "utf-8" }
-  );
-
-  const parsedData = JSON.parse(result);
+  const data = await getData();
 
   return {
-    // paths: parsedData.products.map((p: ProductInterface) => ({
-    //   params: { pid: p.id },
-    // })),
-    paths: [{ params: { pid: "p1" } }],
+    paths: data.products.map((p: ProductInterface) => ({
+      params: { pid: p.id },
+    })),
     fallback: true,
   };
 };
