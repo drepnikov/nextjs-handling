@@ -1,16 +1,20 @@
 import path from "path";
 import fs from "fs/promises";
 import { GetStaticProps, NextPage } from "next";
+import { ProductInterface } from "data/types/product.interface";
+import Link from "next/link";
 
 interface IHomePageProps {
-  products: Array<{ id: string; title: string }>;
+  products: ProductInterface[];
 }
 
 const HomePage: NextPage<IHomePageProps> = ({ products }) => {
   return (
     <ul>
       {products.map((product) => (
-        <li key={product.id}>{product.title}</li>
+        <li key={product.id}>
+          <Link href={`/${product.id}`}>{product.title}</Link>
+        </li>
       ))}
     </ul>
   );
