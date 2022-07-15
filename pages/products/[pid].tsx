@@ -59,4 +59,5 @@ export const getStaticPaths: GetStaticPaths = async () => {
     fallback: true,
   };
 };
+
 export default ProductDetailPage;
