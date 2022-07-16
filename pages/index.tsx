@@ -1,8 +1,7 @@
-import path from "path";
-import fs from "fs/promises";
 import { GetStaticProps, NextPage } from "next";
 import { ProductInterface } from "data/types/product.interface";
 import Link from "next/link";
+import { getData } from "data/helpers/getData";
 
 interface IHomePageProps {
   products: ProductInterface[];
@@ -21,16 +20,11 @@ const HomePage: NextPage<IHomePageProps> = ({ products }) => {
 };
 
 export const getStaticProps: GetStaticProps<IHomePageProps> = async () => {
-  const result = await fs.readFile(
-    path.join(process.cwd(), "data", "dummy-backend.json"),
-    { encoding: "utf-8" }
-  );
-
-  const parsedData = JSON.parse(result);
+  const data = await getData();
 
   return {
     props: {
-      products: parsedData.products,
+      products: data.products,
     },
     revalidate: 60,
   };
