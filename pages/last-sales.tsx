@@ -1,15 +1,16 @@
 import * as React from "react";
-import { NextPage } from "next";
+import { GetStaticProps, NextPage } from "next";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { fetcher } from "data/helpers/fetcher";
+import { SaleInterface } from "data/types/sale.interface";
 
-interface ILastSalesPageProps {}
+interface ILastSalesPageProps {
+  sales: SaleInterface[];
+}
 
-const LastSalesPage: NextPage<ILastSalesPageProps> = () => {
-  const [sales, setSales] = useState<
-    { username: string; volume: number; id: string }[]
-  >([]);
+const LastSalesPage: NextPage<ILastSalesPageProps> = (props) => {
+  const [sales, setSales] = useState<SaleInterface[]>(props.sales);
 
   const papa = useSWR(
     "https://dvrepa-ebcfe-default-rtdb.europe-west1.firebasedatabase.app/sales.json",
@@ -46,6 +47,26 @@ const LastSalesPage: NextPage<ILastSalesPageProps> = () => {
       })}
     </ul>
   );
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+  const data = await fetch(
+    "https://dvrepa-ebcfe-default-rtdb.europe-west1.firebasedatabase.app/sales.json"
+  );
+
+  const parsedData = await data.json();
+
+  return {
+    props: {
+      sales: Object.keys(parsedData).map((s) => {
+        return {
+          volume: parsedData[s].volume,
+          username: parsedData[s].username,
+          id: s,
+        };
+      }),
+    },
+  };
 };
 
 export default LastSalesPage;
