@@ -1,31 +1,25 @@
-import { NextPage } from "next";
-import { useRouter } from "next/router";
+import { GetServerSideProps, NextPage } from "next";
 import { EventListComponent } from "components/events/event-list.component";
-import { getFilteredEvents } from "dummy-data";
 import { ResultsTitleComponent } from "components/events/results-title";
 import { ButtonComponent } from "components/ui/button/button";
 import { ErrorAlertComponent } from "components/ui/error-alert/error-alert";
+import { EventInterface } from "components/events/types/event.interface";
+import { eventsService } from "components/events/services/events.service";
 
-const FilteredEventsPage: NextPage = () => {
-  const router = useRouter();
-  const filters = router.query.filters;
+interface IFilteredEventsPage {
+  events: EventInterface[];
+  invalidFilter: boolean;
+  month: number;
+  year: number;
+}
 
-  if (!filters) {
-    return <p className={"center"}>Loading...</p>;
-  }
-  const [filterYear, filterMonth] = router.query.filters as string[];
-
-  const year = +filterYear;
-  const month = +filterMonth;
-
-  if (
-    Object.is(NaN, year) ||
-    Object.is(NaN, month) ||
-    year > 2030 ||
-    year < 2021 ||
-    month < 1 ||
-    month > 12
-  ) {
+const FilteredEventsPage: NextPage<IFilteredEventsPage> = ({
+  invalidFilter,
+  events,
+  month,
+  year,
+}) => {
+  if (invalidFilter) {
     return (
       <>
         <ErrorAlertComponent>
@@ -38,11 +32,6 @@ const FilteredEventsPage: NextPage = () => {
       </>
     );
   }
-
-  const events = getFilteredEvents({
-    month: Number(month),
-    year: Number(year),
-  });
 
   if (!events.length)
     return (
@@ -65,6 +54,44 @@ const FilteredEventsPage: NextPage = () => {
       <EventListComponent items={events} />
     </>
   );
+};
+
+export const getServerSideProps: GetServerSideProps<
+  IFilteredEventsPage
+> = async ({ params }) => {
+  const [filterYear, filterMonth] = params?.filters as string[];
+
+  const year = +filterYear;
+  const month = +filterMonth;
+
+  if (
+    Object.is(NaN, year) ||
+    Object.is(NaN, month) ||
+    year > 2030 ||
+    year < 2021 ||
+    month < 1 ||
+    month > 12
+  ) {
+    return {
+      props: {
+        invalidFilter: true,
+        events: [],
+        month,
+        year,
+      },
+    };
+  }
+
+  const filteredEvents = await eventsService.getFilteredEvents(year, month);
+
+  return {
+    props: {
+      invalidFilter: false,
+      events: filteredEvents,
+      month,
+      year,
+    },
+  };
 };
 
 export default FilteredEventsPage;

@@ -7,7 +7,7 @@ import { EventInterface } from "components/events/types/event.interface";
 import { eventsService } from "components/events/services/events.service";
 
 interface IEventDetailPageProps {
-  event?: EventInterface;
+  event: EventInterface | null;
 }
 
 const EventDetailPage: NextPage<IEventDetailPageProps> = ({ event }) => {
@@ -37,7 +37,7 @@ export const getStaticProps: GetStaticProps<IEventDetailPageProps> = async (
 
   return {
     props: {
-      event,
+      event: event || null,
     },
   };
 };

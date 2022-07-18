@@ -29,7 +29,16 @@ export class EventsService {
     return allEvents.find((event) => event.id === id);
   }
 
-  async getFilteredEvents() {}
+  async getFilteredEvents(year: number, month: number) {
+    const allEvents = await this.getAllEvents();
+
+    return allEvents.filter((event) => {
+      const eventDate = new Date(event.date);
+      return (
+        eventDate.getFullYear() === year && eventDate.getMonth() === month - 1
+      );
+    });
+  }
 }
 
 export const eventsService = new EventsService();
