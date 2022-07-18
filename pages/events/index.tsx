@@ -32,7 +32,7 @@ export const getStaticProps: GetStaticProps<IAllEventsPageProps> = async () => {
 
   return {
     props: { events },
-    revalidate: 360,
+    revalidate: 60,
   };
 };
 

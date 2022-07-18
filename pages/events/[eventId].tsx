@@ -39,17 +39,18 @@ export const getStaticProps: GetStaticProps<IEventDetailPageProps> = async (
     props: {
       event: event || null,
     },
+    revalidate: 30,
   };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const events = await eventsService.getAllEvents();
+  const events = await eventsService.getFeaturedEvents();
 
   return {
     paths: events.map((event) => ({
       params: { eventId: event.id },
     })),
-    fallback: true,
+    fallback: "blocking",
   };
 };
 

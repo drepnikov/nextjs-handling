@@ -1,4 +1,4 @@
-import { GetServerSideProps, NextPage } from "next";
+import { GetStaticProps, NextPage } from "next";
 import { EventListComponent } from "components/events/event-list.component";
 import { eventsService } from "components/events/services/events.service";
 import { EventInterface } from "components/events/types/event.interface";
@@ -15,13 +15,12 @@ const HomePage: NextPage<IHomePageProps> = ({ featuredEvents }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<
-  IHomePageProps
-> = async () => {
+export const getStaticProps: GetStaticProps<IHomePageProps> = async () => {
   const featuredEvents = await eventsService.getFeaturedEvents();
 
   return {
     props: { featuredEvents },
+    revalidate: 1800,
   };
 };
 

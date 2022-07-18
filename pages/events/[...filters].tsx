@@ -8,18 +8,18 @@ import { eventsService } from "components/events/services/events.service";
 
 interface IFilteredEventsPage {
   events: EventInterface[];
-  invalidFilter: boolean;
+  hasError: boolean;
   month: number;
   year: number;
 }
 
 const FilteredEventsPage: NextPage<IFilteredEventsPage> = ({
-  invalidFilter,
+  hasError,
   events,
   month,
   year,
 }) => {
-  if (invalidFilter) {
+  if (hasError) {
     return (
       <>
         <ErrorAlertComponent>
@@ -72,7 +72,7 @@ export const getServerSideProps: GetServerSideProps<
   ) {
     return {
       props: {
-        invalidFilter: true,
+        hasError: true,
         events: [],
         month,
         year,
@@ -84,7 +84,7 @@ export const getServerSideProps: GetServerSideProps<
 
   return {
     props: {
-      invalidFilter: false,
+      hasError: false,
       events: filteredEvents,
       month,
       year,
