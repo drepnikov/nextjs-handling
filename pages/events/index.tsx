@@ -1,12 +1,16 @@
-import { NextPage } from "next";
-import { getAllEvents } from "dummy-data";
+import { GetStaticProps, NextPage } from "next";
 import { EventListComponent } from "components/events/event-list.component";
 import { EventsSearchComponent } from "components/events/events-search";
 import { useCallback } from "react";
 import { useRouter } from "next/router";
+import { eventsService } from "components/events/services/events.service";
+import { EventInterface } from "components/events/types/event.interface";
 
-const AllEventsPage: NextPage = () => {
-  const events = getAllEvents();
+interface IAllEventsPageProps {
+  events: EventInterface[];
+}
+
+const AllEventsPage: NextPage<IAllEventsPageProps> = ({ events }) => {
   const router = useRouter();
   const onSearchEvents = useCallback(
     (year?: string, month?: string) => {
@@ -21,6 +25,15 @@ const AllEventsPage: NextPage = () => {
       <EventListComponent items={events} />
     </>
   );
+};
+
+export const getStaticProps: GetStaticProps<IAllEventsPageProps> = async () => {
+  const events = await eventsService.getAllEvents();
+
+  return {
+    props: { events },
+    revalidate: 360,
+  };
 };
 
 export default AllEventsPage;

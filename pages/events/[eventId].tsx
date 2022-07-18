@@ -1,15 +1,15 @@
-import { NextPage } from "next";
-import { useRouter } from "next/router";
-import { getEventById } from "dummy-data";
+import { GetStaticProps, NextPage } from "next";
 import EventSummary from "components/event-detail/event-summary";
 import { EventLogisticsComponent } from "components/event-detail/event-logistics";
 import { EventContentComponent } from "components/event-detail/event-content";
 import { ErrorAlertComponent } from "components/ui/error-alert/error-alert";
+import { EventInterface } from "components/events/types/event.interface";
 
-const EventDetailPage: NextPage = () => {
-  const router = useRouter();
-  const event = getEventById(router.query.eventId as string);
+interface IEventDetailPageProps {
+  event: EventInterface;
+}
 
+const EventDetailPage: NextPage<IEventDetailPageProps> = ({ event }) => {
   if (!event) {
     return (
       <ErrorAlertComponent>
@@ -25,6 +25,12 @@ const EventDetailPage: NextPage = () => {
       <EventContentComponent>{event.description}</EventContentComponent>
     </>
   );
+};
+
+const getStaticProps: GetStaticProps<IEventDetailPageProps> = async () => {
+  return {
+    props: {},
+  };
 };
 
 export default EventDetailPage;
