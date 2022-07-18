@@ -1,12 +1,13 @@
-import { GetStaticProps, NextPage } from "next";
+import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import EventSummary from "components/event-detail/event-summary";
 import { EventLogisticsComponent } from "components/event-detail/event-logistics";
 import { EventContentComponent } from "components/event-detail/event-content";
 import { ErrorAlertComponent } from "components/ui/error-alert/error-alert";
 import { EventInterface } from "components/events/types/event.interface";
+import { eventsService } from "components/events/services/events.service";
 
 interface IEventDetailPageProps {
-  event: EventInterface;
+  event?: EventInterface;
 }
 
 const EventDetailPage: NextPage<IEventDetailPageProps> = ({ event }) => {
@@ -27,9 +28,28 @@ const EventDetailPage: NextPage<IEventDetailPageProps> = ({ event }) => {
   );
 };
 
-const getStaticProps: GetStaticProps<IEventDetailPageProps> = async () => {
+export const getStaticProps: GetStaticProps<IEventDetailPageProps> = async (
+  context
+) => {
+  const event = await eventsService.getEventById(
+    context.params?.eventId as string
+  );
+
   return {
-    props: {},
+    props: {
+      event,
+    },
+  };
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const events = await eventsService.getAllEvents();
+
+  return {
+    paths: events.map((event) => ({
+      params: { eventId: event.id },
+    })),
+    fallback: true,
   };
 };
 
