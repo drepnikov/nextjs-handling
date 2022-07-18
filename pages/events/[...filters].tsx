@@ -46,11 +46,9 @@ const FilteredEventsPage: NextPage<IFilteredEventsPage> = ({
       </>
     );
 
-  const date = new Date(year, month - 1);
-
   return (
     <>
-      <ResultsTitleComponent date={date} />
+      <ResultsTitleComponent year={year} month={month} />
       <EventListComponent items={events} />
     </>
   );
