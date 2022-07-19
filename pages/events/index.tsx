@@ -5,6 +5,7 @@ import { useCallback } from "react";
 import { useRouter } from "next/router";
 import { eventsService } from "components/events/services/events.service";
 import { EventInterface } from "components/events/types/event.interface";
+import { Meta } from "components/meta/meta";
 
 interface IAllEventsPageProps {
   events: EventInterface[];
@@ -21,6 +22,10 @@ const AllEventsPage: NextPage<IAllEventsPageProps> = ({ events }) => {
 
   return (
     <>
+      <Meta
+        title={"All Events"}
+        description={"Find a lot of great events allow you to evolve"}
+      />
       <EventsSearchComponent onSubmit={onSearchEvents} />
       <EventListComponent items={events} />
     </>

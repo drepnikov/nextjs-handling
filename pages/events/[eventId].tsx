@@ -5,6 +5,7 @@ import { EventContentComponent } from "components/event-detail/event-content";
 import { ErrorAlertComponent } from "components/ui/error-alert/error-alert";
 import { EventInterface } from "components/events/types/event.interface";
 import { eventsService } from "components/events/services/events.service";
+import { Meta } from "components/meta/meta";
 
 interface IEventDetailPageProps {
   event: EventInterface | null;
@@ -21,6 +22,7 @@ const EventDetailPage: NextPage<IEventDetailPageProps> = ({ event }) => {
 
   return (
     <>
+      <Meta title={event.title} description={event.description} />
       <EventSummary title={event.title} />
       <EventLogisticsComponent event={event} />
       <EventContentComponent>{event.description}</EventContentComponent>

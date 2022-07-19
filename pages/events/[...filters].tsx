@@ -5,6 +5,7 @@ import { ButtonComponent } from "components/ui/button/button";
 import { ErrorAlertComponent } from "components/ui/error-alert/error-alert";
 import { EventInterface } from "components/events/types/event.interface";
 import { eventsService } from "components/events/services/events.service";
+import { Meta } from "components/meta/meta";
 
 interface IFilteredEventsPage {
   events: EventInterface[];
@@ -19,9 +20,17 @@ const FilteredEventsPage: NextPage<IFilteredEventsPage> = ({
   month,
   year,
 }) => {
+  const meta = (
+    <Meta
+      title={"Filtered Events"}
+      description={`All events for ${month}/${year}`}
+    />
+  );
+
   if (hasError) {
     return (
       <>
+        {meta}
         <ErrorAlertComponent>
           <p>Invalid filter. Please adjust yout values!</p>
         </ErrorAlertComponent>
@@ -36,6 +45,7 @@ const FilteredEventsPage: NextPage<IFilteredEventsPage> = ({
   if (!events.length)
     return (
       <>
+        {meta}
         <ErrorAlertComponent>
           <p>No events found for the chosen filter!</p>
         </ErrorAlertComponent>
@@ -48,6 +58,7 @@ const FilteredEventsPage: NextPage<IFilteredEventsPage> = ({
 
   return (
     <>
+      {meta}
       <ResultsTitleComponent year={year} month={month} />
       <EventListComponent items={events} />
     </>
