@@ -3,6 +3,7 @@ import { AddressIcon } from "components/icons/address-icon";
 import { DateIcon } from "components/icons/date-icon";
 import { LogisticsItemComponent } from "components/event-detail/logistics-item";
 import { EventInterface } from "components/events/types/event.interface";
+import Image from "next/image";
 
 interface IEventLogisticsComponentProps {
   event: EventInterface;
@@ -23,7 +24,7 @@ const EventLogisticsComponent: React.FC<IEventLogisticsComponentProps> = ({
   return (
     <section className={classes.logistics}>
       <div className={classes.image}>
-        <img src={`/${image}`} alt={title} />
+        <Image src={`/${image}`} alt={title} width={350} height={340} />
       </div>
       <ul className={classes.list}>
         <LogisticsItemComponent icon={DateIcon}>

@@ -5,6 +5,7 @@ import { ButtonComponent } from "components/ui/button/button";
 import { DateIcon } from "components/icons/date-icon";
 import { AddressIcon } from "components/icons/address-icon";
 import { ArrowRightIcon } from "components/icons/arrow-right-icon";
+import Image from "next/image";
 
 interface IEventItemComponentProps {
   event: EventInterface;
@@ -22,7 +23,7 @@ const EventItemComponent: React.FC<IEventItemComponentProps> = ({ event }) => {
 
   return (
     <li className={classes.item}>
-      <img src={"/" + image} alt="" />
+      <Image src={"/" + image} alt="" width={250} height={160} />
       <div className={classes.content}>
         <div className={classes.summary}>
           <h2>{title}</h2>
